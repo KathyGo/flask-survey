@@ -1,5 +1,17 @@
 {% extends 'base.html'%}
 {% block title %}Survey Completed{% endblock %}
 {% block content %}
-<h1 id="thankyou">Thank you for participating!</h1>
+<h1 class="h1 text-center py-5 mt-0 mb-5" id="thankyou">Thank you for participating!</h1>
+<p class="fs-2 ms-5 mt-5">Submitted survey details:</p>
+<ul class="ms-5">
+    {% for q, answer in response.items() %}
+    <li>
+        <b>{{q}}</b>
+        {{answer}}
+        {% if comments.get(q) %}
+        {{comments.get(q)}}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}

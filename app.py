@@ -8,16 +8,25 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS']=False
 debug = DebugToolbarExtension(app)
 
 
-response=[]
+response={}
+survey_name = []
+answer_comments={}
 
 @app.route("/")
+def select_survey():
+    return render_template("home.html", surveys = surveys)
+
+@app.route("/start")
 def start_survey():
-    survey = surveys["satisfaction"]
+    name = request.args.get("survey")
+    survey_name.append(name)
+    survey = surveys[name]
     return render_template("start.html", survey = survey)
 
 @app.route("/questions/<int:index>")
 def survey_questions(index):
-    survey = surveys["satisfaction"]
+    name = survey_name[0]
+    survey = surveys[name]
     questions = survey.questions
     i = len(response)
     if i<len(questions) and index != i:
@@ -30,18 +39,28 @@ def survey_questions(index):
 
     q = questions[index]
     choices = q.choices
-    return render_template("questions.html", question=q, index=index, choices=choices)
+    comment = q.allow_text
+    return render_template("questions.html", question=q, index=index, choices=choices, allow_text=comment)
 
 @app.route("/answer", methods=["POST"])
 def answer():
-    survey = surveys["satisfaction"]
+    name = survey_name[0]
+    survey = surveys[name]
     questions = survey.questions
     answer = request.form["choices"]
-    response.append(answer)
     # import pdb
     # pdb.set_trace()
-    print(response)
+    # print(response)
     index = len(response)
+    q = questions[index]
+    title = q.question
+    response[title]=answer
+    
+    if q.allow_text:
+        comment = request.form["comments"]
+        answer_comments[title]=comment
+    
+    index = index + 1
     if index < len(questions):
         return redirect(f"/questions/{index}")
     else:
@@ -49,4 +68,7 @@ def answer():
 
 @app.route("/completed")
 def completed():
-    return render_template("completed.html")
+    name = survey_name[0]
+    survey = surveys[name]
+    questions = survey.questions
+    return render_template("completed.html", response=response, comments=answer_comments)

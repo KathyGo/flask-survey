@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Select Survey{% endblock%}
+{% block content %}
+<h1 class="h1 text-center py-5 mt-0 mb-5 bg-primary text-light">Welcome to Survey</h1>
+<form class="text-center fs-2 pt-5" action="/start">
+    <label for="select_survey">Please select a survey:</label>
+    <select name="survey" id="select_survey">
+        {% for key in surveys.keys() %}
+        <option value="{{key}}">{{key}}</option>
+        {% endfor %}
+    </select>
+    <div class="mt-5">
+        <button class="btn btn-primary btn-lg" id="submit-btn">Submit</button>
+    </div>  
+</form>
+
+{% endblock %}

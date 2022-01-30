@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 {% block title %} Start Survey {% endblock %}
 {% block content %}
-<h1 class="title">{{survey.title}}</h1>
-<p class="instruction">{{survey.instructions}}</p>
-<form action="/questions/0">
-    <button>Start</button>
-</form>
+<h1 class="title h1 text-center py-5 mt-0 mb-5 bg-primary text-light">{{survey.title}}</h1>
+<p class="instruction text-center fs-2 mb-5">{{survey.instructions}}</p>
+<a class="btn btn-primary btn-lg position-absolute start-50 translate-middle-x" href="/questions/0">Start</a>
+
 {% endblock %}
