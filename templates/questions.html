@@ -3,15 +3,14 @@
 {% block content %}
 {% with messages=get_flashed_messages(with_categories=true) %}
 {% if messages %}
-<ul class="flashes">
     {% for category, msg in messages %}
-    <li class="{{category}}">{{msg}}</li>
+    <p class="{{category}} my-0 bg-warning text-center fs-5 text-danger">{{msg}}</p>
     {% endfor %}
 </ul>
 {% endif %}
 {% endwith %}
-<form action="/answer" method="POST">
-    <p id="question-{{index}}">{{question.question}}</p>
+<form class="text-center fs-2 pt-5" action="/answer" method="POST">
+    <p class="fs-2 ms-5 mt-5" id="question-{{index}}">{{question.question}}</p>
     {% for choice in choices %}
     <input type="radio" id="{{choice}}" name="choices" value="{{choice}}">
     <label for="{{choice}}">{{choice}}</label><br>
@@ -22,6 +21,6 @@
         <br>
     {% endif %} 
     
-    <button>Next</button>
+    <button class="btn btn-primary btn-lg mt-5">Next</button>
 </form>
 {% endblock %}
